@@ -102,7 +102,7 @@ tr:hover td{background:var(--bg)}
   <div class="hdr-right">
     <div class="live-badge"><div class="live-dot"></div>EN VIVO</div>
     <button class="btn btn-outline" onclick="loadData()">Actualizar</button>
-    <button class="btn btn-outline" onclick="addDemoData()">Datos prueba</button>
+    <button class="btn btn-outline" onclick="addTestData()">Datos prueba</button>
     <button class="btn btn-danger" onclick="clearData()">Limpiar</button>
   </div>
 </header>
@@ -361,19 +361,6 @@ function addTestData() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(demo));
   loadData();
 }
-
-// Inserta boton de prueba sin modificar el HTML principal
-(function(){
-  var hdr = document.querySelector(".hdr-right");
-  if (hdr) {
-    var b = document.createElement("button");
-    b.className = "btn btn-outline";
-    b.type = "button";
-    b.textContent = "Datos prueba";
-    b.onclick = addTestData;
-    hdr.appendChild(b);
-  }
-})();
 
 loadData();
 setInterval(loadData, 10000);
