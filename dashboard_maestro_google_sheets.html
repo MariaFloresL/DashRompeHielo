@@ -27,16 +27,6 @@ header h1{font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:900;c
 .btn:active{transform:scale(0.97)}
 .btn-outline{background:transparent;border:2px solid rgba(255,255,255,0.4);color:#FFF}
 .btn-danger{background:var(--red);color:#FFF}
-
-/* SETUP BOX */
-.setup-box{background:#FEF9EB;border:2px dashed #B8860B;border-radius:12px;padding:20px;margin:20px;font-size:13px;color:#5C4200;line-height:1.7}
-.setup-box h2{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#B8860B;margin-bottom:10px}
-.setup-box ol{margin-left:18px;margin-bottom:12px}
-.setup-box li{margin-bottom:5px}
-.setup-input{width:100%;padding:10px 14px;border:2px solid #B8860B;border-radius:8px;font-size:13px;margin:8px 0;font-family:'Open Sans',sans-serif;background:#FFF;color:#1C1C1C}
-.setup-input:focus{outline:none;border-color:#6B1230}
-.btn-setup{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:10px 20px;background:#6B1230;color:#FFF;border:none;border-radius:8px;cursor:pointer}
-
 main{max-width:1100px;margin:0 auto;padding:24px 20px}
 .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:22px}
 .stat-card{background:var(--white);border-radius:12px;padding:20px 18px;border:1px solid var(--border)}
@@ -71,14 +61,12 @@ tr:hover td{background:var(--bg)}
 .ans-dot{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;font-size:12px;font-weight:800;margin-right:2px}
 .dot-ok{background:var(--grn-bg);color:var(--green)}
 .dot-fail{background:#FDECEB;color:var(--red)}
-.empty-msg{text-align:center;padding:50px 20px;color:var(--muted);font-size:14px}
+.empty-msg{text-align:center;padding:50px 20px;color:var(--muted);font-size:14px;line-height:1.7}
 .refresh-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;font-size:12px;color:var(--muted)}
 .logo-bar{background:var(--white);border-top:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
 .lc{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:6px;white-space:nowrap}
-.lc-g{background:#1A1A2E;color:#FFF}
-.lc-r{background:var(--guinda);color:#FFF}
-.lc-t{background:var(--teal);color:#FFF}
-.lc-s{color:var(--guinda);border:1px solid var(--guinda)}
+.lc-g{background:#1A1A2E;color:#FFF}.lc-r{background:var(--guinda);color:#FFF}
+.lc-t{background:var(--teal);color:#FFF}.lc-s{color:var(--guinda);border:1px solid var(--guinda)}
 </style>
 </head>
 <body>
@@ -92,26 +80,13 @@ tr:hover td{background:var(--bg)}
   <div class="hdr-right">
     <div class="live-dot-wrap"><div class="live-dot"></div>EN VIVO</div>
     <button class="btn btn-outline" onclick="loadData()">Actualizar</button>
+    <button class="btn btn-danger" onclick="clearData()">Limpiar</button>
   </div>
 </header>
 
-<!-- SETUP: pegar ID del Google Sheet -->
-<div id="setup-box" class="setup-box">
-  <h2>Configuracion inicial (solo una vez)</h2>
-  <ol>
-    <li>Abre el Google Sheet donde el script guarda los datos</li>
-    <li>Ve a <b>Archivo &rarr; Compartir &rarr; Publicar en la web</b></li>
-    <li>Selecciona la hoja <b>Respuestas</b>, formato <b>CSV</b> y haz clic en <b>Publicar</b></li>
-    <li>Copia la URL que aparece y pegala aqui:</li>
-  </ol>
-  <input class="setup-input" id="csv-url-input" type="text"
-    placeholder="https://docs.google.com/spreadsheets/d/.../pub?gid=0&single=true&output=csv" />
-  <button class="btn-setup" onclick="guardarCSV()">Guardar y conectar</button>
-</div>
-
 <main>
   <div class="refresh-row">
-    <span id="refresh-info">Esperando configuracion...</span>
+    <span id="refresh-info">Conectando...</span>
     <span id="student-count" style="font-family:Montserrat,sans-serif;font-weight:700;font-size:12px;color:var(--guinda)"></span>
   </div>
   <div class="stats-row">
@@ -153,178 +128,141 @@ tr:hover td{background:var(--bg)}
 </div>
 
 <script>
-var CSV_KEY = "ia_dashboard_csv_url";
-var CSV_URL = localStorage.getItem(CSV_KEY) || "https://docs.google.com/spreadsheets/d/e/2PACX-1vTtXuoKDwEZcKWns-JC78uHJ4hVMc1VhO75lDe0BmiPFudfqUVEpJx5khjudRv5TQcTxGFf7ND_Nnpn/pub?gid=0&single=true&output=csv";
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6-fygiEz5AVcIt53v2DWwKJ3a-ziSDcQuclJF-zn6FpLRzJRJRr-4k7mWx0ZCrTfx/exec";
 var distChart = null, qChart = null;
 var QN = ["Frag. literario","Mensaje chat","Parrafo etico","Foto hormiga","Tuit del flan"];
+var _cbCounter = 0;
 
-function guardarCSV() {
-  var url = document.getElementById("csv-url-input").value.trim();
-  if (!url || !url.includes("docs.google.com")) {
-    alert("URL invalida. Debe ser del Google Sheet publicado como CSV.");
-    return;
-  }
-  localStorage.setItem(CSV_KEY, url);
-  CSV_URL = url;
-  document.getElementById("setup-box").style.display = "none";
-  loadData();
-}
-
-function init() {
-  if (CSV_URL) {
-    document.getElementById("setup-box").style.display = "none";
-    loadData();
-    setInterval(loadData, 8000);
-  }
+// JSONP — inyecta un <script> tag, sin CORS
+function jsonp(url, callback) {
+  var cbName = "_cb" + (++_cbCounter);
+  window[cbName] = function(data) {
+    delete window[cbName];
+    var old = document.getElementById(cbName);
+    if (old) old.parentNode.removeChild(old);
+    callback(null, data);
+  };
+  var s = document.createElement("script");
+  s.id = cbName;
+  s.onerror = function() {
+    delete window[cbName];
+    s.parentNode.removeChild(s);
+    callback(new Error("Error de red"));
+  };
+  s.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "callback=" + cbName + "&t=" + Date.now();
+  document.head.appendChild(s);
 }
 
 function loadData() {
-  if (!CSV_URL) return;
   document.getElementById("refresh-info").textContent = "Actualizando...";
-  // Agrega timestamp para evitar cache
-  var url = CSV_URL + (CSV_URL.includes("?") ? "&" : "?") + "t=" + Date.now();
-  fetch(url)
-    .then(function(r) { return r.text(); })
-    .then(function(csv) {
-      var records = parseCSV(csv);
-      document.getElementById("refresh-info").textContent =
-        "Ultima actualizacion: " + new Date().toLocaleTimeString("es-MX");
-      var n = records.length;
-      document.getElementById("student-count").textContent =
-        n + " respuesta" + (n !== 1 ? "s" : "") + " recibida" + (n !== 1 ? "s" : "");
-      render(records);
-    })
-    .catch(function(e) {
-      document.getElementById("refresh-info").textContent = "Error al leer: " + e.message;
-    });
-}
-
-function parseCSV(text) {
-  var lines = text.trim().split("\n");
-  if (lines.length < 2) return [];
-  // Fila 0 = encabezados, filas 1+ = datos
-  var records = [];
-  for (var i = 1; i < lines.length; i++) {
-    var cols = lines[i].split(",");
-    if (cols.length < 9) continue;
-    records.push({
-      ts:      cols[0].trim(),
-      score:   Number(cols[1]),
-      total:   Number(cols[2]),
-      pct:     Number(cols[3]),
-      answers: [Number(cols[4]), Number(cols[5]), Number(cols[6]), Number(cols[7]), Number(cols[8])]
-    });
-  }
-  return records;
+  jsonp(SCRIPT_URL + "?action=get", function(err, records) {
+    if (err) {
+      document.getElementById("refresh-info").textContent = "Error: " + err.message;
+      renderEmpty(); return;
+    }
+    if (!Array.isArray(records)) records = [];
+    var n = records.length;
+    document.getElementById("refresh-info").textContent =
+      "Ultima actualizacion: " + new Date().toLocaleTimeString("es-MX");
+    document.getElementById("student-count").textContent =
+      n + " respuesta" + (n !== 1 ? "s" : "") + " recibida" + (n !== 1 ? "s" : "");
+    render(records);
+  });
 }
 
 function render(records) {
   var n = records.length;
   document.getElementById("st-total").textContent = n;
   if (!n) { renderEmpty(); return; }
-
   var sumScore = 0, qCorrect = [0,0,0,0,0];
   records.forEach(function(r) {
-    sumScore += r.score;
-    for (var j = 0; j < 5; j++) { if (r.answers[j] === 1) qCorrect[j]++; }
+    sumScore += Number(r.score)||0;
+    var ans = r.answers||[];
+    for (var j=0;j<5;j++) { if (Number(ans[j])===1) qCorrect[j]++; }
   });
-
-  var avg = (sumScore / n).toFixed(1);
-  var avgPct = Math.round(sumScore / n / 5 * 100);
-  var minIdx = 0, minVal = n + 1;
-  qCorrect.forEach(function(c, i) { if (c < minVal) { minVal = c; minIdx = i; } });
-
+  var avg = (sumScore/n).toFixed(1);
+  var avgPct = Math.round(sumScore/n/5*100);
+  var minIdx=0, minVal=n+1;
+  qCorrect.forEach(function(c,i){ if(c<minVal){minVal=c;minIdx=i;} });
   document.getElementById("st-avg").textContent = avg;
-  document.getElementById("st-pct").textContent = avgPct + "%";
-  document.getElementById("st-hard").textContent = "P" + (minIdx + 1);
-
-  var dist = [0,0,0,0,0,0];
-  records.forEach(function(r) { if (r.score >= 0 && r.score <= 5) dist[r.score]++; });
-
-  renderCharts(dist, qCorrect, n);
-  renderBreakdown(qCorrect, n);
+  document.getElementById("st-pct").textContent = avgPct+"%";
+  document.getElementById("st-hard").textContent = "P"+(minIdx+1);
+  var dist=[0,0,0,0,0,0];
+  records.forEach(function(r){ var s=Number(r.score)||0; if(s>=0&&s<=5) dist[s]++; });
+  renderCharts(dist,qCorrect,n);
+  renderBreakdown(qCorrect,n);
   renderTable(records);
 }
 
 function renderEmpty() {
-  document.getElementById("st-avg").textContent = "--";
-  document.getElementById("st-pct").textContent = "--%";
-  document.getElementById("st-hard").textContent = "--";
-  document.getElementById("q-breakdown").innerHTML = '<div class="empty-msg">Sin datos todavia.</div>';
-  document.getElementById("tbl-body").innerHTML = '<tr><td colspan="9"><div class="empty-msg">Esperando respuestas...</div></td></tr>';
+  document.getElementById("st-total").textContent="0";
+  document.getElementById("st-avg").textContent="--";
+  document.getElementById("st-pct").textContent="--%";
+  document.getElementById("st-hard").textContent="--";
+  document.getElementById("q-breakdown").innerHTML='<div class="empty-msg">Sin datos todavia.<br>Espera a que los alumnos completen la actividad.</div>';
+  document.getElementById("tbl-body").innerHTML='<tr><td colspan="9"><div class="empty-msg">Esperando respuestas...</div></td></tr>';
   renderCharts([0,0,0,0,0,0],[0,0,0,0,0],0);
 }
 
-function renderCharts(dist, qCorrect, n) {
-  var c1 = document.getElementById("chart-dist").getContext("2d");
-  if (distChart) distChart.destroy();
-  distChart = new Chart(c1, {
-    type:"bar",
-    data:{
-      labels:["0","1","2","3","4","5"],
-      datasets:[{label:"Alumnos",data:dist,
-        backgroundColor:["#FDECEB","#FDECEB","#FEF9EB","#E6F4F6","#E8F5EE","#E8F5EE"],
-        borderColor:["#C0392B","#C0392B","#B8860B","#016B78","#1A6B3C","#1A6B3C"],
-        borderWidth:2,borderRadius:6}]
-    },
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false}},
+function renderCharts(dist,qCorrect,n) {
+  var c1=document.getElementById("chart-dist").getContext("2d");
+  if(distChart) distChart.destroy();
+  distChart=new Chart(c1,{type:"bar",data:{labels:["0","1","2","3","4","5"],datasets:[{label:"Alumnos",data:dist,
+    backgroundColor:["#FDECEB","#FDECEB","#FEF9EB","#E6F4F6","#E8F5EE","#E8F5EE"],
+    borderColor:["#C0392B","#C0392B","#B8860B","#016B78","#1A6B3C","#1A6B3C"],
+    borderWidth:2,borderRadius:6}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
       scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{family:"Open Sans",size:11}},grid:{color:"#EBEBEB"}},
-              x:{ticks:{font:{family:"Open Sans",size:11}},grid:{display:false}}}}
-  });
-
-  var c2 = document.getElementById("chart-qs").getContext("2d");
-  if (qChart) qChart.destroy();
-  var qErr = qCorrect.map(function(c){return n-c;});
-  qChart = new Chart(c2, {
-    type:"bar",
-    data:{
-      labels:["P1","P2","P3","P4","P5"],
-      datasets:[
-        {label:"Aciertos",data:qCorrect,backgroundColor:"#E8F5EE",borderColor:"#1A6B3C",borderWidth:2,borderRadius:4},
-        {label:"Errores", data:qErr,    backgroundColor:"#FDECEB",borderColor:"#C0392B",borderWidth:2,borderRadius:4}
-      ]
-    },
+              x:{ticks:{font:{family:"Open Sans",size:11}},grid:{display:false}}}}});
+  var c2=document.getElementById("chart-qs").getContext("2d");
+  if(qChart) qChart.destroy();
+  var qErr=qCorrect.map(function(c){return n-c;});
+  qChart=new Chart(c2,{type:"bar",data:{labels:["P1","P2","P3","P4","P5"],datasets:[
+    {label:"Aciertos",data:qCorrect,backgroundColor:"#E8F5EE",borderColor:"#1A6B3C",borderWidth:2,borderRadius:4},
+    {label:"Errores",data:qErr,backgroundColor:"#FDECEB",borderColor:"#C0392B",borderWidth:2,borderRadius:4}]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{position:"bottom",labels:{font:{family:"Open Sans",size:11},boxWidth:12,padding:12}}},
       scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{family:"Open Sans",size:11}},grid:{color:"#EBEBEB"}},
-              x:{ticks:{font:{family:"Open Sans",size:11}},grid:{display:false}}}}
-  });
+              x:{ticks:{font:{family:"Open Sans",size:11}},grid:{display:false}}}}});
 }
 
-function renderBreakdown(qCorrect, n) {
-  if (!n) return;
-  var html = "";
-  QN.forEach(function(name, j) {
-    var pOk = Math.round(qCorrect[j] / n * 100);
-    var pFail = 100 - pOk;
-    var color = pOk >= 70 ? "#1A6B3C" : pOk >= 50 ? "#B8860B" : "#C0392B";
-    html += '<div class="q-row"><span class="q-num">P'+(j+1)+'</span><span class="q-name">'+name+'</span>';
-    html += '<div class="q-bar-wrap"><div class="q-bar-bg"><div class="q-bar-fill" style="width:'+pOk+'%;background:'+color+'"></div></div>';
-    html += '<div class="q-pcts"><span class="pct-ok">'+pOk+'% correcto</span><span class="pct-fail">'+pFail+'% error</span></div></div></div>';
+function renderBreakdown(qCorrect,n) {
+  if(!n) return;
+  var html="";
+  QN.forEach(function(name,j){
+    var pOk=Math.round(qCorrect[j]/n*100), pFail=100-pOk;
+    var color=pOk>=70?"#1A6B3C":pOk>=50?"#B8860B":"#C0392B";
+    html+='<div class="q-row"><span class="q-num">P'+(j+1)+'</span><span class="q-name">'+name+'</span>';
+    html+='<div class="q-bar-wrap"><div class="q-bar-bg"><div class="q-bar-fill" style="width:'+pOk+'%;background:'+color+'"></div></div>';
+    html+='<div class="q-pcts"><span class="pct-ok">'+pOk+'% correcto</span><span class="pct-fail">'+pFail+'% error</span></div></div></div>';
   });
-  document.getElementById("q-breakdown").innerHTML = html;
+  document.getElementById("q-breakdown").innerHTML=html;
 }
 
 function renderTable(records) {
-  var html = "";
-  records.forEach(function(r, i) {
-    var pct = r.pct || Math.round(r.score / 5 * 100);
-    var sc = pct>=80?"#1A6B3C":pct>=60?"#B8860B":"#C0392B";
-    var bg = pct>=80?"#E8F5EE":pct>=60?"#FBF5E0":"#FDECEB";
-    html += '<tr><td style="color:var(--muted);font-size:12px">'+(i+1)+'</td>';
-    html += '<td><span class="score-badge" style="background:'+bg+';color:'+sc+'">'+r.score+' / 5</span></td>';
-    html += '<td style="font-family:Montserrat,sans-serif;font-weight:800;color:'+sc+'">'+pct+'%</td>';
-    for (var j=0;j<5;j++){
-      var ok=r.answers[j]===1;
-      html+='<td><span class="ans-dot '+(ok?"dot-ok":"dot-fail")+'">'+(ok?"&#10003;":"&#10007;")+'</span></td>';
-    }
+  var html="";
+  records.forEach(function(r,i){
+    var pct=Number(r.pct)||Math.round(Number(r.score)/5*100);
+    var sc=pct>=80?"#1A6B3C":pct>=60?"#B8860B":"#C0392B";
+    var bg=pct>=80?"#E8F5EE":pct>=60?"#FBF5E0":"#FDECEB";
+    html+='<tr><td style="color:var(--muted);font-size:12px">'+(i+1)+'</td>';
+    html+='<td><span class="score-badge" style="background:'+bg+';color:'+sc+'">'+r.score+' / 5</span></td>';
+    html+='<td style="font-family:Montserrat,sans-serif;font-weight:800;color:'+sc+'">'+pct+'%</td>';
+    var ans=r.answers||[];
+    for(var j=0;j<5;j++){var ok=Number(ans[j])===1;
+      html+='<td><span class="ans-dot '+(ok?"dot-ok":"dot-fail")+'">'+(ok?"&#10003;":"&#10007;")+'</span></td>';}
     html+='<td style="font-size:11px;color:var(--muted)">'+(r.ts||"--")+'</td></tr>';
   });
-  document.getElementById("tbl-body").innerHTML = html || '<tr><td colspan="9"><div class="empty-msg">Sin datos.</div></td></tr>';
+  document.getElementById("tbl-body").innerHTML=html||'<tr><td colspan="9"><div class="empty-msg">Sin datos.</div></td></tr>';
 }
 
-init();
+function clearData() {
+  if(!confirm("Borrar todos los resultados del grupo?")) return;
+  jsonp(SCRIPT_URL+"?action=clear", function(){ loadData(); });
+}
+
+loadData();
+setInterval(loadData, 8000);
 </script>
 </body>
 </html>
