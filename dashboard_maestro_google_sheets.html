@@ -10,61 +10,59 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --red:#C0392B;--guinda:#6B1230;--gold:#B8860B;
-  --teal:#016B78;--green:#1A6B3C;
-  --bg:#F4F4F6;--white:#FFFFFF;--border:#E0E0E0;
-  --text:#1C1C1C;--muted:#666680;
+  --teal:#016B78;--green:#1A6B3C;--grn-bg:#E8F5EE;--teal-bg:#E6F4F6;
+  --bg:#F4F4F6;--white:#FFFFFF;--border:#E0E0E0;--text:#1C1C1C;--muted:#666680
 }
-body{font-family:'Open Sans',sans-serif;background:var(--bg);color:var(--text)}
+body{font-family:'Open Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 .top-bar{height:5px;background:linear-gradient(90deg,var(--guinda) 0%,var(--red) 60%,#C9AD2B 100%)}
 header{background:var(--guinda);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.hdr-left{}
 .hdr-act{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:4px}
 header h1{font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:900;color:#FFF;text-transform:uppercase}
-.hdr-sub{font-family:'Montserrat',sans-serif;font-size:0.7rem;font-weight:700;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
-.hdr-right{display:flex;gap:10px;align-items:center}
-.btn{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:9px 18px;border-radius:8px;border:none;cursor:pointer;transition:transform 0.15s}
-.btn:active{transform:scale(0.97)}
-.btn-outline{background:transparent;border:2px solid rgba(255,255,255,0.4);color:#FFF}
-.btn-outline:hover{background:rgba(255,255,255,0.1)}
-.btn-danger{background:var(--red);color:#FFF}
-.live-badge{display:flex;align-items:center;gap:6px;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:800;text-transform:uppercase;color:rgba(255,255,255,0.8);letter-spacing:1px}
+.hdr-sub{font-family:'Montserrat',sans-serif;font-size:0.7rem;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+.hdr-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.live-dot-wrap{display:flex;align-items:center;gap:6px;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:800;text-transform:uppercase;color:rgba(255,255,255,0.8);letter-spacing:1px}
 .live-dot{width:8px;height:8px;border-radius:50%;background:#4ADE80;animation:blink 1.5s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.btn{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:9px 16px;border-radius:8px;border:none;cursor:pointer;transition:transform 0.12s}
+.btn:active{transform:scale(0.97)}
+.btn-outline{background:transparent;border:2px solid rgba(255,255,255,0.4);color:#FFF}
+.btn-danger{background:var(--red);color:#FFF}
+
+/* CONFIG BOX */
+.cfg-box{background:#FEF9EB;border:2px dashed #B8860B;border-radius:12px;padding:20px;margin:20px;font-size:14px;color:#5C4200;line-height:1.7}
+.cfg-box h2{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#B8860B;margin-bottom:12px}
+.cfg-box ol{margin-left:18px}
+.cfg-box li{margin-bottom:6px}
+.cfg-box code{background:rgba(0,0,0,0.06);padding:2px 6px;border-radius:4px;font-size:13px;font-family:monospace}
+.cfg-input{width:100%;padding:10px 14px;border:2px solid #B8860B;border-radius:8px;font-size:14px;margin:10px 0;font-family:'Open Sans',sans-serif;background:#FFF;color:var(--text)}
+.cfg-input:focus{outline:none;border-color:var(--guinda)}
+.btn-cfg{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:10px 20px;background:var(--guinda);color:#FFF;border:none;border-radius:8px;cursor:pointer}
 
 main{max-width:1100px;margin:0 auto;padding:24px 20px}
-
-/* STAT CARDS */
-.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:22px}
 .stat-card{background:var(--white);border-radius:12px;padding:20px 18px;border:1px solid var(--border)}
-.stat-label{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:8px}
-.stat-value{font-family:'Montserrat',sans-serif;font-size:2.2rem;font-weight:900;line-height:1}
+.stat-lbl{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:8px}
+.stat-val{font-family:'Montserrat',sans-serif;font-size:2.2rem;font-weight:900;line-height:1}
 .stat-sub{font-size:12px;color:var(--muted);margin-top:4px}
-.sv-green{color:var(--green)}
-.sv-red{color:var(--red)}
-.sv-teal{color:var(--teal)}
-.sv-gold{color:var(--gold)}
+.sv-g{color:var(--green)}.sv-r{color:var(--red)}.sv-t{color:var(--teal)}.sv-gold{color:var(--gold)}
 
-/* CHARTS ROW */
-.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px}
 @media(max-width:640px){.charts-row{grid-template-columns:1fr}}
 .chart-card{background:var(--white);border-radius:12px;padding:20px;border:1px solid var(--border)}
-.card-title{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
-.chart-wrap{position:relative;height:220px}
+.card-title{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.chart-wrap{position:relative;height:210px}
 
-/* QUESTION BREAKDOWN */
-.breakdown-card{background:var(--white);border-radius:12px;padding:20px;border:1px solid var(--border);margin-bottom:24px}
+.breakdown-card{background:var(--white);border-radius:12px;padding:20px;border:1px solid var(--border);margin-bottom:22px}
 .q-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
 .q-row:last-child{border-bottom:none}
 .q-num{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:800;color:var(--muted);width:24px;flex-shrink:0}
 .q-name{font-size:13px;color:var(--text);flex:1;min-width:0}
-.q-bar-wrap{width:160px;flex-shrink:0}
+.q-bar-wrap{width:180px;flex-shrink:0}
 .q-bar-bg{background:var(--bg);border-radius:4px;height:10px;overflow:hidden;margin-bottom:3px}
 .q-bar-fill{height:100%;border-radius:4px;transition:width 0.6s}
 .q-pcts{display:flex;justify-content:space-between;font-size:10px;font-family:'Montserrat',sans-serif;font-weight:700}
-.pct-ok{color:var(--green)}
-.pct-fail{color:var(--red)}
+.pct-ok{color:var(--green)}.pct-fail{color:var(--red)}
 
-/* TABLE */
 .table-card{background:var(--white);border-radius:12px;padding:20px;border:1px solid var(--border);margin-bottom:24px}
 .tbl-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:13px}
@@ -73,15 +71,12 @@ th{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:800;text-trans
 td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--text)}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:var(--bg)}
-.td-name{font-weight:600}
 .score-badge{display:inline-block;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:800;padding:3px 10px;border-radius:5px}
-.ans-dot{display:inline-block;width:20px;height:20px;border-radius:4px;line-height:20px;text-align:center;font-size:11px;font-weight:800;margin-right:2px}
-.dot-ok{background:var(--grn-bg,#E8F5EE);color:var(--green)}
+.ans-dot{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;font-size:12px;font-weight:800;margin-right:2px}
+.dot-ok{background:var(--grn-bg);color:var(--green)}
 .dot-fail{background:#FDECEB;color:var(--red)}
-.empty-state{text-align:center;padding:60px 20px;color:var(--muted)}
-.empty-state h3{font-family:'Montserrat',sans-serif;font-size:1.1rem;font-weight:800;text-transform:uppercase;margin-bottom:8px}
-.empty-state p{font-size:13px;line-height:1.65}
-.refresh-info{font-size:11px;color:var(--muted);text-align:right;margin-bottom:12px}
+.empty-msg{text-align:center;padding:50px 20px;color:var(--muted);font-size:14px}
+.refresh-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;font-size:12px;color:var(--muted)}
 
 .logo-bar{background:var(--white);border-top:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
 .lc{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:6px;white-space:nowrap}
@@ -94,84 +89,70 @@ tr:hover td{background:var(--bg)}
 <body>
 <div class="top-bar"></div>
 <header>
-  <div class="hdr-left">
+  <div>
     <div class="hdr-act">Panel del Maestro</div>
     <h1>Resultados en Tiempo Real</h1>
-    <div class="hdr-sub">Actividad 1 &middot; &iquest;IA o Humano? &middot; Mundial Social 2026</div>
+    <div class="hdr-sub">Actividad 1 &middot; IA o Humano &middot; Mundial Social 2026</div>
   </div>
   <div class="hdr-right">
-    <div class="live-badge"><div class="live-dot"></div>EN VIVO</div>
+    <div class="live-dot-wrap"><div class="live-dot"></div>EN VIVO</div>
     <button class="btn btn-outline" onclick="loadData()">Actualizar</button>
-    <button class="btn btn-outline" onclick="addDemoData()">Datos prueba</button>
-    <button class="btn btn-danger" onclick="clearData()">Limpiar</button>
+    <button class="btn btn-danger" onclick="clearData()">Limpiar datos</button>
   </div>
 </header>
 
-<main>
-  <p class="refresh-info" id="refresh-info">Ultima actualizacion: --</p>
+<!-- CONFIG BOX -->
+<div id="cfg-box" class="cfg-box" style="display:none">
+  <h2>&#9888; Configura Firebase (solo la primera vez, 2 minutos)</h2>
+  <ol>
+    <li>Ve a <a href="https://console.firebase.google.com" target="_blank"><b>console.firebase.google.com</b></a> e inicia sesion con Google</li>
+    <li>Clic en <b>Agregar proyecto</b> → nombre: <code>ia-quiz-2026</code> → Continuar hasta crear</li>
+    <li>En el menu izquierdo: <b>Compilacion → Realtime Database → Crear base de datos</b></li>
+    <li>Selecciona <b>Modo de prueba</b> → Habilitar</li>
+    <li>Copia la URL que aparece (ejemplo: <code>https://ia-quiz-2026-default-rtdb.firebaseio.com</code>)</li>
+    <li>Pegala aqui abajo y haz clic en Guardar:</li>
+  </ol>
+  <input class="cfg-input" id="fb-url-input" type="text" placeholder="https://tu-proyecto-default-rtdb.firebaseio.com" />
+  <button class="btn-cfg" onclick="saveConfig()">Guardar y conectar</button>
+  <br><br>
+  <small>Despues de configurar, pega la misma URL en el archivo <code>actividad1_rompe_hielo.html</code> en la variable <code>FIREBASE_URL</code></small>
+</div>
 
-  <!-- STAT CARDS -->
-  <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-label">Alumnos completaron</div>
-      <div class="stat-value sv-teal" id="st-total">0</div>
-      <div class="stat-sub">respuestas recibidas</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Promedio del grupo</div>
-      <div class="stat-value sv-gold" id="st-avg">--</div>
-      <div class="stat-sub">de 5 preguntas</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Tasa de aciertos</div>
-      <div class="stat-value sv-green" id="st-pct">--%</div>
-      <div class="stat-sub">promedio grupal</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Pregunta mas dificil</div>
-      <div class="stat-value sv-red" id="st-hard">--</div>
-      <div class="stat-sub">mayor porcentaje de error</div>
-    </div>
+<main>
+  <div class="refresh-row">
+    <span id="refresh-info">Conectando...</span>
+    <span id="student-count" style="font-family:Montserrat,sans-serif;font-weight:700;font-size:12px;color:var(--guinda)"></span>
   </div>
 
-  <!-- CHARTS -->
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-lbl">Alumnos</div><div class="stat-val sv-t" id="st-total">0</div><div class="stat-sub">completaron</div></div>
+    <div class="stat-card"><div class="stat-lbl">Promedio</div><div class="stat-val sv-gold" id="st-avg">--</div><div class="stat-sub">de 5 preguntas</div></div>
+    <div class="stat-card"><div class="stat-lbl">Aciertos</div><div class="stat-val sv-g" id="st-pct">--%</div><div class="stat-sub">promedio grupal</div></div>
+    <div class="stat-card"><div class="stat-lbl">Mas dificil</div><div class="stat-val sv-r" id="st-hard">--</div><div class="stat-sub">mayor % de error</div></div>
+  </div>
+
   <div class="charts-row">
     <div class="chart-card">
-      <div class="card-title">Distribucion de puntajes</div>
-      <div class="chart-wrap"><canvas id="chart-scores"></canvas></div>
+      <div class="card-title">Distribucion de puntajes del grupo</div>
+      <div class="chart-wrap"><canvas id="chart-dist"></canvas></div>
     </div>
     <div class="chart-card">
       <div class="card-title">Aciertos vs errores por pregunta</div>
-      <div class="chart-wrap"><canvas id="chart-questions"></canvas></div>
+      <div class="chart-wrap"><canvas id="chart-qs"></canvas></div>
     </div>
   </div>
 
-  <!-- BREAKDOWN BY QUESTION -->
   <div class="breakdown-card">
     <div class="card-title">Detalle por pregunta</div>
-    <div id="q-breakdown">
-      <div class="empty-state"><p>Sin datos todavia.</p></div>
-    </div>
+    <div id="q-breakdown"><div class="empty-msg">Sin datos todavia.</div></div>
   </div>
 
-  <!-- STUDENT TABLE -->
   <div class="table-card">
-    <div class="card-title">Respuestas individuales</div>
+    <div class="card-title">Respuestas individuales anonimas</div>
     <div class="tbl-wrap">
-      <table id="students-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Nombre</th>
-            <th>Puntaje</th>
-            <th>%</th>
-            <th>P1</th><th>P2</th><th>P3</th><th>P4</th><th>P5</th>
-            <th>Hora</th>
-          </tr>
-        </thead>
-        <tbody id="table-body">
-          <tr><td colspan="10"><div class="empty-state"><h3>Sin alumnos aun</h3><p>Cuando los alumnos completen la actividad, sus resultados apareceran aqui automaticamente.<br>Haz clic en Actualizar o espera el refresco automatico cada 10 segundos.</p></div></td></tr>
-        </tbody>
+      <table>
+        <thead><tr><th>#</th><th>Puntaje</th><th>%</th><th>P1</th><th>P2</th><th>P3</th><th>P4</th><th>P5</th><th>Hora</th></tr></thead>
+        <tbody id="tbl-body"><tr><td colspan="9"><div class="empty-msg">Esperando respuestas de alumnos...</div></td></tr></tbody>
       </table>
     </div>
   </div>
@@ -185,198 +166,173 @@ tr:hover td{background:var(--bg)}
 </div>
 
 <script>
-var GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwrRK5dWSC_CCb1CXYuPKsJCCy30BKz6XL1-znOEFFEaxD1UwqRujIygL-x3uFrKNM/exec"; // Misma URL que pegaste en la actividad
-var STORAGE_KEY = "ia_quiz_resultados_2026"; // Respaldo local si lo pruebas en el mismo navegador
-var QLabels = ["P1: Frag. literario", "P2: Mensaje chat", "P3: Parrafo etico", "P4: Foto hormiga", "P5: Tuit flan"];
-var scoreChart = null, qChart = null;
-var jsonpCounter = 0;
+var GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwrRK5dWSC_CCb1CXYuPKsJCCy30BKz6XL1-znOEFFEaxD1UwqRujIygL-x3uFrKNM/exec";
+var distChart = null, qChart = null;
+var QN = ["Frag. literario","Mensaje chat","Parrafo etico","Foto hormiga","Tuit del flan"];
 
-function safeNum(v, def) {
-  var n = Number(v);
-  return isNaN(n) ? def : n;
+function init() {
+  document.getElementById("cfg-box").style.display = "none";
+  loadData();
+  setInterval(loadData, 8000);
 }
 
-function normalizeRows(rows) {
-  if (!Array.isArray(rows)) return [];
-  return rows.map(function (r, idx) {
-    var answers = r.answers;
-    if (typeof answers === "string") {
-      try { answers = JSON.parse(answers); } catch(e) { answers = null; }
-    }
-    if (!Array.isArray(answers)) {
-      answers = [safeNum(r.p1,0), safeNum(r.p2,0), safeNum(r.p3,0), safeNum(r.p4,0), safeNum(r.p5,0)];
-    }
-    var score = safeNum(r.score, answers.reduce(function(a,b){ return a + (safeNum(b,0) === 1 ? 1 : 0); }, 0));
-    return {
-      nombre: r.nombre || r.name || ("Alumno " + (idx + 1)),
-      score: score,
-      total: safeNum(r.total, 5),
-      pct: safeNum(r.pct, Math.round(score / 5 * 100)),
-      answers: answers.map(function(x){ return safeNum(x,0) === 1 ? 1 : 0; }).slice(0,5),
-      ts: r.ts || r.hora || r.fecha || "--"
-    };
-  });
-}
-
-function loadData() {
-  document.getElementById("refresh-info").textContent = "Ultima actualizacion: " + new Date().toLocaleTimeString("es-MX");
-
-  if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.indexOf("https://script.google.com/macros/s/AKfycbwrRK5dWSC_CCb1CXYuPKsJCCy30BKz6XL1-znOEFFEaxD1UwqRujIygL-x3uFrKNM/exec") >= 0) {
-    var local = [];
-    try { local = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); } catch(e) { local = []; }
-    renderAll(normalizeRows(local));
-    if (!local.length) {
-      document.getElementById("q-breakdown").innerHTML = '<div class="empty-state"><h3>Falta configurar Google Sheets</h3><p>Pega la URL de Apps Script en la variable GOOGLE_SCRIPT_URL de este archivo y tambien en la actividad.</p></div>';
-    }
-    return;
+async function loadData() {
+  document.getElementById("refresh-info").textContent = "Actualizando...";
+  try {
+    var resp = await fetch(GOOGLE_SCRIPT_URL + "?action=get");
+    if (!resp.ok) throw new Error("HTTP " + resp.status);
+    var records = await resp.json();
+    if (!Array.isArray(records)) records = [];
+    document.getElementById("refresh-info").textContent = "Ultima actualizacion: " + new Date().toLocaleTimeString("es-MX");
+    document.getElementById("student-count").textContent = records.length + " respuesta" + (records.length !== 1 ? "s" : "") + " recibida" + (records.length !== 1 ? "s" : "");
+    render(records);
+  } catch(e) {
+    document.getElementById("refresh-info").textContent = "Error al conectar: " + e.message;
+    renderEmpty();
   }
-
-  loadFromGoogleSheet(function(rows){
-    renderAll(normalizeRows(rows));
-  }, function(){
-    document.getElementById("q-breakdown").innerHTML = '<div class="empty-state"><h3>No se pudieron cargar los datos</h3><p>Revisa que la URL de Apps Script sea correcta y que la implementacion este publicada para Cualquier usuario.</p></div>';
-    renderAll([]);
-  });
 }
 
-function loadFromGoogleSheet(success, fail) {
-  var cbName = "dashboardCallback_" + (++jsonpCounter);
-  window[cbName] = function(data) {
-    try {
-      success(data && data.rows ? data.rows : []);
-    } finally {
-      cleanup();
-    }
-  };
-  function cleanup() {
-    try { delete window[cbName]; } catch(e) { window[cbName] = undefined; }
-    if (script && script.parentNode) script.parentNode.removeChild(script);
-  }
-  var script = document.createElement("script");
-  script.src = GOOGLE_SCRIPT_URL + (GOOGLE_SCRIPT_URL.indexOf("?") >= 0 ? "&" : "?") + "callback=" + cbName + "&t=" + Date.now();
-  script.onerror = function() { cleanup(); if (fail) fail(); };
-  document.body.appendChild(script);
-}
+function render(records) {
+  var n = records.length;
+  document.getElementById("st-total").textContent = n;
 
-function renderAll(raw) {
-  if (!raw.length) {
-    document.getElementById("st-total").textContent = "0";
-    document.getElementById("st-avg").textContent = "--";
-    document.getElementById("st-pct").textContent = "--%";
-    document.getElementById("st-hard").textContent = "--";
-    document.getElementById("table-body").innerHTML = '<tr><td colspan="10"><div class="empty-state"><h3>Sin alumnos aun</h3><p>Cuando los alumnos completen la actividad, sus resultados apareceran aqui.</p></div></td></tr>';
-    if (document.getElementById("q-breakdown").innerHTML.indexOf("Falta configurar") < 0) {
-      document.getElementById("q-breakdown").innerHTML = '<div class="empty-state"><h3>Sin datos todavia</h3><p>Los alumnos deben completar la actividad publicada.</p></div>';
-    }
-    renderCharts([0,0,0,0,0,0], [0,0,0,0,0], 0);
-    return;
-  }
+  if (!n) { renderEmpty(); return; }
 
-  var total = raw.length;
-  var sumScore = raw.reduce(function(acc, r){ return acc + safeNum(r.score,0); }, 0);
-  var avg = (sumScore / total).toFixed(1);
-  var avgPct = Math.round(sumScore / total / 5 * 100);
-
-  var qCorrect = [0,0,0,0,0];
-  raw.forEach(function(r){
-    (r.answers || []).forEach(function(a, j){ if (j < 5 && a === 1) qCorrect[j]++; });
+  var sumScore = 0, qCorrect = [0,0,0,0,0];
+  records.forEach(function(r) {
+    sumScore += r.score;
+    var ans = r.answers || [];
+    for (var j = 0; j < 5; j++) { if (ans[j] === 1) qCorrect[j]++; }
   });
 
-  var hardIdx = 0, minCorrect = total + 1;
-  qCorrect.forEach(function(v, j){ if (v < minCorrect) { minCorrect = v; hardIdx = j; } });
+  var avg = (sumScore / n).toFixed(1);
+  var avgPct = Math.round(sumScore / n / 5 * 100);
+  var minIdx = 0, minVal = n + 1;
+  qCorrect.forEach(function(c, i) { if (c < minVal) { minVal = c; minIdx = i; } });
 
-  document.getElementById("st-total").textContent = total;
   document.getElementById("st-avg").textContent = avg;
   document.getElementById("st-pct").textContent = avgPct + "%";
-  document.getElementById("st-hard").textContent = "P" + (hardIdx + 1);
+  document.getElementById("st-hard").textContent = "P" + (minIdx + 1);
 
+  // Distribution 0-5
   var dist = [0,0,0,0,0,0];
-  raw.forEach(function(r){ var s = Math.max(0, Math.min(5, safeNum(r.score,0))); dist[s]++; });
+  records.forEach(function(r) { dist[r.score]++; });
 
-  renderCharts(dist, qCorrect, total);
-  renderBreakdown(qCorrect, total);
-  renderTable(raw);
+  renderCharts(dist, qCorrect, n);
+  renderBreakdown(qCorrect, n);
+  renderTable(records);
 }
 
-function renderCharts(dist, qCorrect, total) {
-  var ctx1 = document.getElementById("chart-scores").getContext("2d");
-  if (scoreChart) scoreChart.destroy();
-  scoreChart = new Chart(ctx1, {
+function renderEmpty() {
+  document.getElementById("st-total").textContent = "0";
+  document.getElementById("st-avg").textContent = "--";
+  document.getElementById("st-pct").textContent = "--%";
+  document.getElementById("st-hard").textContent = "--";
+  document.getElementById("q-breakdown").innerHTML = '<div class="empty-msg">Sin datos todavia. Espera a que los alumnos completen la actividad.</div>';
+  document.getElementById("tbl-body").innerHTML = '<tr><td colspan="9"><div class="empty-msg">Esperando respuestas de alumnos...</div></td></tr>';
+  renderCharts([0,0,0,0,0,0],[0,0,0,0,0],0);
+}
+
+function renderCharts(dist, qCorrect, n) {
+  var ctx1 = document.getElementById("chart-dist").getContext("2d");
+  if (distChart) distChart.destroy();
+  distChart = new Chart(ctx1, {
     type: "bar",
-    data: { labels: ["0", "1", "2", "3", "4", "5"], datasets: [{ label: "Alumnos", data: dist, backgroundColor: ["#FDECEB","#FDECEB","#FEF9EB","#E6F4F6","#E8F5EE","#E8F5EE"], borderColor: ["#C0392B","#C0392B","#B8860B","#016B78","#1A6B3C","#1A6B3C"], borderWidth: 2, borderRadius: 6 }] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1, font: { family: "Open Sans", size: 11 } }, grid: { color: "#E0E0E0" } }, x: { ticks: { font: { family: "Open Sans", size: 11 } }, grid: { display: false } } } }
+    data: {
+      labels: ["0","1","2","3","4","5"],
+      datasets: [{
+        label: "Alumnos",
+        data: dist,
+        backgroundColor: ["#FDECEB","#FDECEB","#FEF9EB","#E6F4F6","#E8F5EE","#E8F5EE"],
+        borderColor:     ["#C0392B","#C0392B","#B8860B","#016B78","#1A6B3C","#1A6B3C"],
+        borderWidth: 2, borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, ticks: { stepSize: 1, font: { family: "Open Sans", size: 11 } }, grid: { color: "#EBEBEB" } },
+        x: { ticks: { font: { family: "Open Sans", size: 11 } }, grid: { display: false } }
+      }
+    }
   });
 
-  var ctx2 = document.getElementById("chart-questions").getContext("2d");
+  var ctx2 = document.getElementById("chart-qs").getContext("2d");
   if (qChart) qChart.destroy();
-  var qErrors = qCorrect.map(function(v){ return total ? total - v : 0; });
+  var qErr = qCorrect.map(function(c) { return n - c; });
   qChart = new Chart(ctx2, {
     type: "bar",
-    data: { labels: ["P1","P2","P3","P4","P5"], datasets: [{ label: "Aciertos", data: qCorrect, backgroundColor: "#E8F5EE", borderColor: "#1A6B3C", borderWidth: 2, borderRadius: 4 }, { label: "Errores", data: qErrors, backgroundColor: "#FDECEB", borderColor: "#C0392B", borderWidth: 2, borderRadius: 4 }] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "bottom", labels: { font: { family: "Open Sans", size: 11 }, boxWidth: 12 } } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1, font: { family: "Open Sans", size: 11 } }, grid: { color: "#E0E0E0" } }, x: { ticks: { font: { family: "Open Sans", size: 11 } }, grid: { display: false } } } }
+    data: {
+      labels: ["P1","P2","P3","P4","P5"],
+      datasets: [
+        { label: "Aciertos", data: qCorrect, backgroundColor: "#E8F5EE", borderColor: "#1A6B3C", borderWidth: 2, borderRadius: 4 },
+        { label: "Errores",  data: qErr,     backgroundColor: "#FDECEB", borderColor: "#C0392B", borderWidth: 2, borderRadius: 4 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: "bottom", labels: { font: { family: "Open Sans", size: 11 }, boxWidth: 12, padding: 12 } } },
+      scales: {
+        y: { beginAtZero: true, ticks: { stepSize: 1, font: { family: "Open Sans", size: 11 } }, grid: { color: "#EBEBEB" } },
+        x: { ticks: { font: { family: "Open Sans", size: 11 } }, grid: { display: false } }
+      }
+    }
   });
 }
 
-function renderBreakdown(qCorrect, total) {
-  var qNames = ["Fragmento literario melancolico","Mensaje de chat informal","Parrafo etico sobre IA","Foto macro de hormiga","Tuit del flan y mama"];
+function renderBreakdown(qCorrect, n) {
+  if (!n) return;
   var html = "";
-  for (var j = 0; j < 5; j++) {
-    var pctOk = total ? Math.round(qCorrect[j] / total * 100) : 0;
-    var pctFail = 100 - pctOk;
-    html += '<div class="q-row"><span class="q-num">P' + (j+1) + '</span><span class="q-name">' + qNames[j] + '</span><div class="q-bar-wrap"><div class="q-bar-bg"><div class="q-bar-fill" style="width:' + pctOk + '%;background:' + (pctOk >= 70 ? "#1A6B3C" : pctOk >= 50 ? "#B8860B" : "#C0392B") + '"></div></div><div class="q-pcts"><span class="pct-ok">' + pctOk + '% correcto</span><span class="pct-fail">' + pctFail + '% error</span></div></div></div>';
-  }
+  QN.forEach(function(name, j) {
+    var pOk = Math.round(qCorrect[j] / n * 100);
+    var pFail = 100 - pOk;
+    var barColor = pOk >= 70 ? "#1A6B3C" : pOk >= 50 ? "#B8860B" : "#C0392B";
+    html += '<div class="q-row">';
+    html += '<span class="q-num">P' + (j+1) + '</span>';
+    html += '<span class="q-name">' + name + '</span>';
+    html += '<div class="q-bar-wrap">';
+    html += '<div class="q-bar-bg"><div class="q-bar-fill" style="width:' + pOk + '%;background:' + barColor + '"></div></div>';
+    html += '<div class="q-pcts"><span class="pct-ok">' + pOk + '% correcto</span><span class="pct-fail">' + pFail + '% error</span></div>';
+    html += '</div></div>';
+  });
   document.getElementById("q-breakdown").innerHTML = html;
 }
 
-function renderTable(raw) {
-  var html = "";
-  raw.forEach(function(r, i){
-    var pct = safeNum(r.pct, Math.round(safeNum(r.score,0) / 5 * 100));
-    var scoreColor = pct >= 80 ? "#1A6B3C" : pct >= 60 ? "#B8860B" : "#C0392B";
-    var scoreBg = pct >= 80 ? "#E8F5EE" : pct >= 60 ? "#FBF5E0" : "#FDECEB";
-    html += '<tr><td style="color:var(--muted);font-size:12px">' + (i+1) + '</td>';
-    html += '<td class="td-name">' + (r.nombre || 'Anonimo') + '</td>';
-    html += '<td><span class="score-badge" style="background:' + scoreBg + ';color:' + scoreColor + '">' + r.score + ' / 5</span></td>';
-    html += '<td style="font-family:Montserrat,sans-serif;font-weight:800;color:' + scoreColor + '">' + pct + '%</td>';
-    for (var j = 0; j < 5; j++) {
-      var a = (r.answers || [])[j];
-      html += '<td><span class="ans-dot ' + (a === 1 ? "dot-ok" : "dot-fail") + '">' + (a === 1 ? "&#10003;" : "&#10007;") + '</span></td>';
-    }
-    html += '<td style="font-size:11px;color:var(--muted)">' + (r.ts || '--') + '</td></tr>';
-  });
-  document.getElementById("table-body").innerHTML = html;
-}
-
-function clearData() {
-  if (!confirm("Borrar todos los resultados del grupo en este navegador? La hoja de Google Sheets no se borra desde aqui.")) return;
-  localStorage.removeItem(STORAGE_KEY);
-  loadData();
-}
-
-function addTestData() {
-  var demo = [
-    {nombre:"Alumno prueba 1",score:4,total:5,pct:80,answers:[1,1,1,0,1],ts:new Date().toLocaleTimeString("es-MX")},
-    {nombre:"Alumno prueba 2",score:3,total:5,pct:60,answers:[1,0,1,0,1],ts:new Date().toLocaleTimeString("es-MX")}
-  ];
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(demo));
-  loadData();
-}
-
-// Inserta boton de prueba sin modificar el HTML principal
-(function(){
-  var hdr = document.querySelector(".hdr-right");
-  if (hdr) {
-    var b = document.createElement("button");
-    b.className = "btn btn-outline";
-    b.type = "button";
-    b.textContent = "Datos prueba";
-    b.onclick = addTestData;
-    hdr.appendChild(b);
+function renderTable(records) {
+  if (!records.length) {
+    document.getElementById("tbl-body").innerHTML = '<tr><td colspan="9"><div class="empty-msg">Sin datos.</div></td></tr>';
+    return;
   }
-})();
+  var html = "";
+  records.forEach(function(r, i) {
+    var pct = r.pct || Math.round(r.score / 5 * 100);
+    var sc = pct >= 80 ? "#1A6B3C" : pct >= 60 ? "#B8860B" : "#C0392B";
+    var bg = pct >= 80 ? "#E8F5EE" : pct >= 60 ? "#FBF5E0" : "#FDECEB";
+    html += '<tr>';
+    html += '<td style="color:var(--muted);font-size:12px">' + (i+1) + '</td>';
+    html += '<td><span class="score-badge" style="background:' + bg + ';color:' + sc + '">' + r.score + ' / 5</span></td>';
+    html += '<td style="font-family:Montserrat,sans-serif;font-weight:800;color:' + sc + '">' + pct + '%</td>';
+    var ans = r.answers || [];
+    for (var j = 0; j < 5; j++) {
+      var ok = ans[j] === 1;
+      html += '<td><span class="ans-dot ' + (ok ? "dot-ok" : "dot-fail") + '">' + (ok ? "&#10003;" : "&#10007;") + '</span></td>';
+    }
+    html += '<td style="font-size:11px;color:var(--muted)">' + (r.ts || "--") + '</td>';
+    html += '</tr>';
+  });
+  document.getElementById("tbl-body").innerHTML = html;
+}
 
-loadData();
-setInterval(loadData, 10000);
+async function clearData() {
+  if (!confirm("Borrar todos los resultados del grupo?")) return;
+  try {
+    await fetch(GOOGLE_SCRIPT_URL + "?action=clear");
+    loadData();
+  } catch(e) { alert("Error al borrar: " + e.message); }
+}
+
+init();
 </script>
 </body>
 </html>
