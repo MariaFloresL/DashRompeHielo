@@ -27,17 +27,6 @@ header h1{font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:900;c
 .btn:active{transform:scale(0.97)}
 .btn-outline{background:transparent;border:2px solid rgba(255,255,255,0.4);color:#FFF}
 .btn-danger{background:var(--red);color:#FFF}
-
-/* CONFIG BOX */
-.cfg-box{background:#FEF9EB;border:2px dashed #B8860B;border-radius:12px;padding:20px;margin:20px;font-size:14px;color:#5C4200;line-height:1.7}
-.cfg-box h2{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#B8860B;margin-bottom:12px}
-.cfg-box ol{margin-left:18px}
-.cfg-box li{margin-bottom:6px}
-.cfg-box code{background:rgba(0,0,0,0.06);padding:2px 6px;border-radius:4px;font-size:13px;font-family:monospace}
-.cfg-input{width:100%;padding:10px 14px;border:2px solid #B8860B;border-radius:8px;font-size:14px;margin:10px 0;font-family:'Open Sans',sans-serif;background:#FFF;color:var(--text)}
-.cfg-input:focus{outline:none;border-color:var(--guinda)}
-.btn-cfg{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:10px 20px;background:var(--guinda);color:#FFF;border:none;border-radius:8px;cursor:pointer}
-
 main{max-width:1100px;margin:0 auto;padding:24px 20px}
 .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:22px}
 .stat-card{background:var(--white);border-radius:12px;padding:20px 18px;border:1px solid var(--border)}
@@ -45,13 +34,11 @@ main{max-width:1100px;margin:0 auto;padding:24px 20px}
 .stat-val{font-family:'Montserrat',sans-serif;font-size:2.2rem;font-weight:900;line-height:1}
 .stat-sub{font-size:12px;color:var(--muted);margin-top:4px}
 .sv-g{color:var(--green)}.sv-r{color:var(--red)}.sv-t{color:var(--teal)}.sv-gold{color:var(--gold)}
-
 .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px}
 @media(max-width:640px){.charts-row{grid-template-columns:1fr}}
 .chart-card{background:var(--white);border-radius:12px;padding:20px;border:1px solid var(--border)}
 .card-title{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
 .chart-wrap{position:relative;height:210px}
-
 .breakdown-card{background:var(--white);border-radius:12px;padding:20px;border:1px solid var(--border);margin-bottom:22px}
 .q-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
 .q-row:last-child{border-bottom:none}
@@ -62,7 +49,6 @@ main{max-width:1100px;margin:0 auto;padding:24px 20px}
 .q-bar-fill{height:100%;border-radius:4px;transition:width 0.6s}
 .q-pcts{display:flex;justify-content:space-between;font-size:10px;font-family:'Montserrat',sans-serif;font-weight:700}
 .pct-ok{color:var(--green)}.pct-fail{color:var(--red)}
-
 .table-card{background:var(--white);border-radius:12px;padding:20px;border:1px solid var(--border);margin-bottom:24px}
 .tbl-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:13px}
@@ -77,7 +63,6 @@ tr:hover td{background:var(--bg)}
 .dot-fail{background:#FDECEB;color:var(--red)}
 .empty-msg{text-align:center;padding:50px 20px;color:var(--muted);font-size:14px}
 .refresh-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;font-size:12px;color:var(--muted)}
-
 .logo-bar{background:var(--white);border-top:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
 .lc{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:6px;white-space:nowrap}
 .lc-g{background:#1A1A2E;color:#FFF}
@@ -100,23 +85,6 @@ tr:hover td{background:var(--bg)}
     <button class="btn btn-danger" onclick="clearData()">Limpiar datos</button>
   </div>
 </header>
-
-<!-- CONFIG BOX -->
-<div id="cfg-box" class="cfg-box" style="display:none">
-  <h2>&#9888; Configura Firebase (solo la primera vez, 2 minutos)</h2>
-  <ol>
-    <li>Ve a <a href="https://console.firebase.google.com" target="_blank"><b>console.firebase.google.com</b></a> e inicia sesion con Google</li>
-    <li>Clic en <b>Agregar proyecto</b> → nombre: <code>ia-quiz-2026</code> → Continuar hasta crear</li>
-    <li>En el menu izquierdo: <b>Compilacion → Realtime Database → Crear base de datos</b></li>
-    <li>Selecciona <b>Modo de prueba</b> → Habilitar</li>
-    <li>Copia la URL que aparece (ejemplo: <code>https://ia-quiz-2026-default-rtdb.firebaseio.com</code>)</li>
-    <li>Pegala aqui abajo y haz clic en Guardar:</li>
-  </ol>
-  <input class="cfg-input" id="fb-url-input" type="text" placeholder="https://tu-proyecto-default-rtdb.firebaseio.com" />
-  <button class="btn-cfg" onclick="saveConfig()">Guardar y conectar</button>
-  <br><br>
-  <small>Despues de configurar, pega la misma URL en el archivo <code>actividad1_rompe_hielo.html</code> en la variable <code>FIREBASE_URL</code></small>
-</div>
 
 <main>
   <div class="refresh-row">
@@ -171,38 +139,43 @@ var distChart = null, qChart = null;
 var QN = ["Frag. literario","Mensaje chat","Parrafo etico","Foto hormiga","Tuit del flan"];
 
 function init() {
-  document.getElementById("cfg-box").style.display = "none";
   loadData();
   setInterval(loadData, 8000);
 }
 
-async function loadData() {
+function loadData() {
   document.getElementById("refresh-info").textContent = "Actualizando...";
-  try {
-    var resp = await fetch(GOOGLE_SCRIPT_URL + "?action=get");
-    if (!resp.ok) throw new Error("HTTP " + resp.status);
-    var records = await resp.json();
-    if (!Array.isArray(records)) records = [];
-    document.getElementById("refresh-info").textContent = "Ultima actualizacion: " + new Date().toLocaleTimeString("es-MX");
-    document.getElementById("student-count").textContent = records.length + " respuesta" + (records.length !== 1 ? "s" : "") + " recibida" + (records.length !== 1 ? "s" : "");
-    render(records);
-  } catch(e) {
-    document.getElementById("refresh-info").textContent = "Error al conectar: " + e.message;
-    renderEmpty();
-  }
+  var url = GOOGLE_SCRIPT_URL + "?action=get&t=" + Date.now();
+  fetch(url)
+    .then(function(resp) {
+      if (!resp.ok) throw new Error("HTTP " + resp.status);
+      return resp.json();
+    })
+    .then(function(records) {
+      if (!Array.isArray(records)) records = [];
+      var n = records.length;
+      document.getElementById("refresh-info").textContent = "Ultima actualizacion: " + new Date().toLocaleTimeString("es-MX");
+      document.getElementById("student-count").textContent = n + " respuesta" + (n !== 1 ? "s" : "") + " recibida" + (n !== 1 ? "s" : "");
+      render(records);
+    })
+    .catch(function(e) {
+      document.getElementById("refresh-info").textContent = "Error: " + e.message + " — verifica que el script este publicado como 'Cualquier usuario'";
+      renderEmpty();
+    });
 }
 
 function render(records) {
   var n = records.length;
   document.getElementById("st-total").textContent = n;
-
   if (!n) { renderEmpty(); return; }
 
   var sumScore = 0, qCorrect = [0,0,0,0,0];
   records.forEach(function(r) {
-    sumScore += r.score;
+    sumScore += Number(r.score) || 0;
     var ans = r.answers || [];
-    for (var j = 0; j < 5; j++) { if (ans[j] === 1) qCorrect[j]++; }
+    for (var j = 0; j < 5; j++) {
+      if (Number(ans[j]) === 1) qCorrect[j]++;
+    }
   });
 
   var avg = (sumScore / n).toFixed(1);
@@ -214,9 +187,11 @@ function render(records) {
   document.getElementById("st-pct").textContent = avgPct + "%";
   document.getElementById("st-hard").textContent = "P" + (minIdx + 1);
 
-  // Distribution 0-5
   var dist = [0,0,0,0,0,0];
-  records.forEach(function(r) { dist[r.score]++; });
+  records.forEach(function(r) {
+    var s = Number(r.score) || 0;
+    if (s >= 0 && s <= 5) dist[s]++;
+  });
 
   renderCharts(dist, qCorrect, n);
   renderBreakdown(qCorrect, n);
@@ -229,7 +204,7 @@ function renderEmpty() {
   document.getElementById("st-pct").textContent = "--%";
   document.getElementById("st-hard").textContent = "--";
   document.getElementById("q-breakdown").innerHTML = '<div class="empty-msg">Sin datos todavia. Espera a que los alumnos completen la actividad.</div>';
-  document.getElementById("tbl-body").innerHTML = '<tr><td colspan="9"><div class="empty-msg">Esperando respuestas de alumnos...</div></td></tr>';
+  document.getElementById("tbl-body").innerHTML = '<tr><td colspan="9"><div class="empty-msg">Esperando respuestas...</div></td></tr>';
   renderCharts([0,0,0,0,0,0],[0,0,0,0,0],0);
 }
 
@@ -306,7 +281,7 @@ function renderTable(records) {
   }
   var html = "";
   records.forEach(function(r, i) {
-    var pct = r.pct || Math.round(r.score / 5 * 100);
+    var pct = Number(r.pct) || Math.round(Number(r.score) / 5 * 100);
     var sc = pct >= 80 ? "#1A6B3C" : pct >= 60 ? "#B8860B" : "#C0392B";
     var bg = pct >= 80 ? "#E8F5EE" : pct >= 60 ? "#FBF5E0" : "#FDECEB";
     html += '<tr>';
@@ -315,7 +290,7 @@ function renderTable(records) {
     html += '<td style="font-family:Montserrat,sans-serif;font-weight:800;color:' + sc + '">' + pct + '%</td>';
     var ans = r.answers || [];
     for (var j = 0; j < 5; j++) {
-      var ok = ans[j] === 1;
+      var ok = Number(ans[j]) === 1;
       html += '<td><span class="ans-dot ' + (ok ? "dot-ok" : "dot-fail") + '">' + (ok ? "&#10003;" : "&#10007;") + '</span></td>';
     }
     html += '<td style="font-size:11px;color:var(--muted)">' + (r.ts || "--") + '</td>';
@@ -324,12 +299,11 @@ function renderTable(records) {
   document.getElementById("tbl-body").innerHTML = html;
 }
 
-async function clearData() {
+function clearData() {
   if (!confirm("Borrar todos los resultados del grupo?")) return;
-  try {
-    await fetch(GOOGLE_SCRIPT_URL + "?action=clear");
-    loadData();
-  } catch(e) { alert("Error al borrar: " + e.message); }
+  fetch(GOOGLE_SCRIPT_URL + "?action=clear")
+    .then(function() { loadData(); })
+    .catch(function(e) { alert("Error al borrar: " + e.message); });
 }
 
 init();
