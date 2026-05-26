@@ -128,46 +128,37 @@ tr:hover td{background:var(--bg)}
 </div>
 
 <script>
-var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6-fygiEz5AVcIt53v2DWwKJ3a-ziSDcQuclJF-zn6FpLRzJRJRr-4k7mWx0ZCrTfx/exec";
+var SHEETDB_URL = "https://sheetdb.io/api/v1/3r4eslqlv581i";
 var distChart = null, qChart = null;
 var QN = ["Frag. literario","Mensaje chat","Parrafo etico","Foto hormiga","Tuit del flan"];
-var _cbCounter = 0;
-
-// JSONP — inyecta un <script> tag, sin CORS
-function jsonp(url, callback) {
-  var cbName = "_cb" + (++_cbCounter);
-  window[cbName] = function(data) {
-    delete window[cbName];
-    var old = document.getElementById(cbName);
-    if (old) old.parentNode.removeChild(old);
-    callback(null, data);
-  };
-  var s = document.createElement("script");
-  s.id = cbName;
-  s.onerror = function() {
-    delete window[cbName];
-    s.parentNode.removeChild(s);
-    callback(new Error("Error de red"));
-  };
-  s.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "callback=" + cbName + "&t=" + Date.now();
-  document.head.appendChild(s);
-}
 
 function loadData() {
   document.getElementById("refresh-info").textContent = "Actualizando...";
-  jsonp(SCRIPT_URL + "?action=get", function(err, records) {
-    if (err) {
-      document.getElementById("refresh-info").textContent = "Error: " + err.message;
-      renderEmpty(); return;
-    }
-    if (!Array.isArray(records)) records = [];
-    var n = records.length;
-    document.getElementById("refresh-info").textContent =
-      "Ultima actualizacion: " + new Date().toLocaleTimeString("es-MX");
-    document.getElementById("student-count").textContent =
-      n + " respuesta" + (n !== 1 ? "s" : "") + " recibida" + (n !== 1 ? "s" : "");
-    render(records);
-  });
+  fetch(SHEETDB_URL + "?t=" + Date.now())
+    .then(function(r) { return r.json(); })
+    .then(function(rows) {
+      if (!Array.isArray(rows)) rows = [];
+      var records = rows.map(function(r) {
+        var ans = String(r.P1||"0")+","+String(r.P2||"0")+","+String(r.P3||"0")+","+String(r.P4||"0")+","+String(r.P5||"0");
+        return {
+          ts: r.Hora || "--",
+          score: Number(r.Puntaje) || 0,
+          total: Number(r.Total) || 5,
+          pct: Number(r["%"]) || 0,
+          answers: ans.split(",").map(function(x){ return Number(x); })
+        };
+      });
+      var n = records.length;
+      document.getElementById("refresh-info").textContent =
+        "Ultima actualizacion: " + new Date().toLocaleTimeString("es-MX");
+      document.getElementById("student-count").textContent =
+        n + " respuesta" + (n !== 1 ? "s" : "") + " recibida" + (n !== 1 ? "s" : "");
+      render(records);
+    })
+    .catch(function(e) {
+      document.getElementById("refresh-info").textContent = "Error: " + e.message;
+      renderEmpty();
+    });
 }
 
 function render(records) {
@@ -258,7 +249,9 @@ function renderTable(records) {
 
 function clearData() {
   if(!confirm("Borrar todos los resultados del grupo?")) return;
-  jsonp(SCRIPT_URL+"?action=clear", function(){ loadData(); });
+  fetch(SHEETDB_URL + "/all", { method: "DELETE" })
+    .then(function(){ loadData(); })
+    .catch(function(e){ alert("Error: " + e.message); });
 }
 
 loadData();
