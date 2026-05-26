@@ -10,7 +10,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --red:#C0392B;--guinda:#6B1230;--gold:#B8860B;
-  --teal:#016B78;--green:#1A6B3C;--grn-bg:#E8F5EE;--teal-bg:#E6F4F6;
+  --teal:#016B78;--green:#1A6B3C;--grn-bg:#E8F5EE;
   --bg:#F4F4F6;--white:#FFFFFF;--border:#E0E0E0;--text:#1C1C1C;--muted:#666680
 }
 body{font-family:'Open Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
@@ -27,6 +27,16 @@ header h1{font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:900;c
 .btn:active{transform:scale(0.97)}
 .btn-outline{background:transparent;border:2px solid rgba(255,255,255,0.4);color:#FFF}
 .btn-danger{background:var(--red);color:#FFF}
+
+/* SETUP BOX */
+.setup-box{background:#FEF9EB;border:2px dashed #B8860B;border-radius:12px;padding:20px;margin:20px;font-size:13px;color:#5C4200;line-height:1.7}
+.setup-box h2{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#B8860B;margin-bottom:10px}
+.setup-box ol{margin-left:18px;margin-bottom:12px}
+.setup-box li{margin-bottom:5px}
+.setup-input{width:100%;padding:10px 14px;border:2px solid #B8860B;border-radius:8px;font-size:13px;margin:8px 0;font-family:'Open Sans',sans-serif;background:#FFF;color:#1C1C1C}
+.setup-input:focus{outline:none;border-color:#6B1230}
+.btn-setup{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:10px 20px;background:#6B1230;color:#FFF;border:none;border-radius:8px;cursor:pointer}
+
 main{max-width:1100px;margin:0 auto;padding:24px 20px}
 .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:22px}
 .stat-card{background:var(--white);border-radius:12px;padding:20px 18px;border:1px solid var(--border)}
@@ -82,26 +92,37 @@ tr:hover td{background:var(--bg)}
   <div class="hdr-right">
     <div class="live-dot-wrap"><div class="live-dot"></div>EN VIVO</div>
     <button class="btn btn-outline" onclick="loadData()">Actualizar</button>
-    <button class="btn btn-danger" onclick="clearData()">Limpiar datos</button>
   </div>
 </header>
 
+<!-- SETUP: pegar ID del Google Sheet -->
+<div id="setup-box" class="setup-box">
+  <h2>Configuracion inicial (solo una vez)</h2>
+  <ol>
+    <li>Abre el Google Sheet donde el script guarda los datos</li>
+    <li>Ve a <b>Archivo &rarr; Compartir &rarr; Publicar en la web</b></li>
+    <li>Selecciona la hoja <b>Respuestas</b>, formato <b>CSV</b> y haz clic en <b>Publicar</b></li>
+    <li>Copia la URL que aparece y pegala aqui:</li>
+  </ol>
+  <input class="setup-input" id="csv-url-input" type="text"
+    placeholder="https://docs.google.com/spreadsheets/d/.../pub?gid=0&single=true&output=csv" />
+  <button class="btn-setup" onclick="guardarCSV()">Guardar y conectar</button>
+</div>
+
 <main>
   <div class="refresh-row">
-    <span id="refresh-info">Conectando...</span>
+    <span id="refresh-info">Esperando configuracion...</span>
     <span id="student-count" style="font-family:Montserrat,sans-serif;font-weight:700;font-size:12px;color:var(--guinda)"></span>
   </div>
-
   <div class="stats-row">
     <div class="stat-card"><div class="stat-lbl">Alumnos</div><div class="stat-val sv-t" id="st-total">0</div><div class="stat-sub">completaron</div></div>
     <div class="stat-card"><div class="stat-lbl">Promedio</div><div class="stat-val sv-gold" id="st-avg">--</div><div class="stat-sub">de 5 preguntas</div></div>
     <div class="stat-card"><div class="stat-lbl">Aciertos</div><div class="stat-val sv-g" id="st-pct">--%</div><div class="stat-sub">promedio grupal</div></div>
     <div class="stat-card"><div class="stat-lbl">Mas dificil</div><div class="stat-val sv-r" id="st-hard">--</div><div class="stat-sub">mayor % de error</div></div>
   </div>
-
   <div class="charts-row">
     <div class="chart-card">
-      <div class="card-title">Distribucion de puntajes del grupo</div>
+      <div class="card-title">Distribucion de puntajes</div>
       <div class="chart-wrap"><canvas id="chart-dist"></canvas></div>
     </div>
     <div class="chart-card">
@@ -109,18 +130,16 @@ tr:hover td{background:var(--bg)}
       <div class="chart-wrap"><canvas id="chart-qs"></canvas></div>
     </div>
   </div>
-
   <div class="breakdown-card">
     <div class="card-title">Detalle por pregunta</div>
     <div id="q-breakdown"><div class="empty-msg">Sin datos todavia.</div></div>
   </div>
-
   <div class="table-card">
     <div class="card-title">Respuestas individuales anonimas</div>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>#</th><th>Puntaje</th><th>%</th><th>P1</th><th>P2</th><th>P3</th><th>P4</th><th>P5</th><th>Hora</th></tr></thead>
-        <tbody id="tbl-body"><tr><td colspan="9"><div class="empty-msg">Esperando respuestas de alumnos...</div></td></tr></tbody>
+        <tbody id="tbl-body"><tr><td colspan="9"><div class="empty-msg">Esperando respuestas...</div></td></tr></tbody>
       </table>
     </div>
   </div>
@@ -134,34 +153,69 @@ tr:hover td{background:var(--bg)}
 </div>
 
 <script>
-var GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyU9alswnY5_f3PuWHV7K6gER2m10zdvYgKoFM7KeTrGXUeuxIcbyWXfKiZEl5UEmJh/exec";
+var CSV_KEY = "ia_dashboard_csv_url";
+var CSV_URL = localStorage.getItem(CSV_KEY) || "";
 var distChart = null, qChart = null;
 var QN = ["Frag. literario","Mensaje chat","Parrafo etico","Foto hormiga","Tuit del flan"];
 
-function init() {
+function guardarCSV() {
+  var url = document.getElementById("csv-url-input").value.trim();
+  if (!url || !url.includes("docs.google.com")) {
+    alert("URL invalida. Debe ser del Google Sheet publicado como CSV.");
+    return;
+  }
+  localStorage.setItem(CSV_KEY, url);
+  CSV_URL = url;
+  document.getElementById("setup-box").style.display = "none";
   loadData();
-  setInterval(loadData, 8000);
+}
+
+function init() {
+  if (CSV_URL) {
+    document.getElementById("setup-box").style.display = "none";
+    loadData();
+    setInterval(loadData, 8000);
+  }
 }
 
 function loadData() {
+  if (!CSV_URL) return;
   document.getElementById("refresh-info").textContent = "Actualizando...";
-  var url = GOOGLE_SCRIPT_URL + "?action=get&t=" + Date.now();
+  // Agrega timestamp para evitar cache
+  var url = CSV_URL + (CSV_URL.includes("?") ? "&" : "?") + "t=" + Date.now();
   fetch(url)
-    .then(function(resp) {
-      if (!resp.ok) throw new Error("HTTP " + resp.status);
-      return resp.json();
-    })
-    .then(function(records) {
-      if (!Array.isArray(records)) records = [];
+    .then(function(r) { return r.text(); })
+    .then(function(csv) {
+      var records = parseCSV(csv);
+      document.getElementById("refresh-info").textContent =
+        "Ultima actualizacion: " + new Date().toLocaleTimeString("es-MX");
       var n = records.length;
-      document.getElementById("refresh-info").textContent = "Ultima actualizacion: " + new Date().toLocaleTimeString("es-MX");
-      document.getElementById("student-count").textContent = n + " respuesta" + (n !== 1 ? "s" : "") + " recibida" + (n !== 1 ? "s" : "");
+      document.getElementById("student-count").textContent =
+        n + " respuesta" + (n !== 1 ? "s" : "") + " recibida" + (n !== 1 ? "s" : "");
       render(records);
     })
     .catch(function(e) {
-      document.getElementById("refresh-info").textContent = "Error: " + e.message + " — verifica que el script este publicado como 'Cualquier usuario'";
-      renderEmpty();
+      document.getElementById("refresh-info").textContent = "Error al leer: " + e.message;
     });
+}
+
+function parseCSV(text) {
+  var lines = text.trim().split("\n");
+  if (lines.length < 2) return [];
+  // Fila 0 = encabezados, filas 1+ = datos
+  var records = [];
+  for (var i = 1; i < lines.length; i++) {
+    var cols = lines[i].split(",");
+    if (cols.length < 9) continue;
+    records.push({
+      ts:      cols[0].trim(),
+      score:   Number(cols[1]),
+      total:   Number(cols[2]),
+      pct:     Number(cols[3]),
+      answers: [Number(cols[4]), Number(cols[5]), Number(cols[6]), Number(cols[7]), Number(cols[8])]
+    });
+  }
+  return records;
 }
 
 function render(records) {
@@ -171,11 +225,8 @@ function render(records) {
 
   var sumScore = 0, qCorrect = [0,0,0,0,0];
   records.forEach(function(r) {
-    sumScore += Number(r.score) || 0;
-    var ans = r.answers || [];
-    for (var j = 0; j < 5; j++) {
-      if (Number(ans[j]) === 1) qCorrect[j]++;
-    }
+    sumScore += r.score;
+    for (var j = 0; j < 5; j++) { if (r.answers[j] === 1) qCorrect[j]++; }
   });
 
   var avg = (sumScore / n).toFixed(1);
@@ -188,10 +239,7 @@ function render(records) {
   document.getElementById("st-hard").textContent = "P" + (minIdx + 1);
 
   var dist = [0,0,0,0,0,0];
-  records.forEach(function(r) {
-    var s = Number(r.score) || 0;
-    if (s >= 0 && s <= 5) dist[s]++;
-  });
+  records.forEach(function(r) { if (r.score >= 0 && r.score <= 5) dist[r.score]++; });
 
   renderCharts(dist, qCorrect, n);
   renderBreakdown(qCorrect, n);
@@ -199,60 +247,48 @@ function render(records) {
 }
 
 function renderEmpty() {
-  document.getElementById("st-total").textContent = "0";
   document.getElementById("st-avg").textContent = "--";
   document.getElementById("st-pct").textContent = "--%";
   document.getElementById("st-hard").textContent = "--";
-  document.getElementById("q-breakdown").innerHTML = '<div class="empty-msg">Sin datos todavia. Espera a que los alumnos completen la actividad.</div>';
+  document.getElementById("q-breakdown").innerHTML = '<div class="empty-msg">Sin datos todavia.</div>';
   document.getElementById("tbl-body").innerHTML = '<tr><td colspan="9"><div class="empty-msg">Esperando respuestas...</div></td></tr>';
   renderCharts([0,0,0,0,0,0],[0,0,0,0,0],0);
 }
 
 function renderCharts(dist, qCorrect, n) {
-  var ctx1 = document.getElementById("chart-dist").getContext("2d");
+  var c1 = document.getElementById("chart-dist").getContext("2d");
   if (distChart) distChart.destroy();
-  distChart = new Chart(ctx1, {
-    type: "bar",
-    data: {
-      labels: ["0","1","2","3","4","5"],
-      datasets: [{
-        label: "Alumnos",
-        data: dist,
-        backgroundColor: ["#FDECEB","#FDECEB","#FEF9EB","#E6F4F6","#E8F5EE","#E8F5EE"],
-        borderColor:     ["#C0392B","#C0392B","#B8860B","#016B78","#1A6B3C","#1A6B3C"],
-        borderWidth: 2, borderRadius: 6
-      }]
+  distChart = new Chart(c1, {
+    type:"bar",
+    data:{
+      labels:["0","1","2","3","4","5"],
+      datasets:[{label:"Alumnos",data:dist,
+        backgroundColor:["#FDECEB","#FDECEB","#FEF9EB","#E6F4F6","#E8F5EE","#E8F5EE"],
+        borderColor:["#C0392B","#C0392B","#B8860B","#016B78","#1A6B3C","#1A6B3C"],
+        borderWidth:2,borderRadius:6}]
     },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        y: { beginAtZero: true, ticks: { stepSize: 1, font: { family: "Open Sans", size: 11 } }, grid: { color: "#EBEBEB" } },
-        x: { ticks: { font: { family: "Open Sans", size: 11 } }, grid: { display: false } }
-      }
-    }
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{family:"Open Sans",size:11}},grid:{color:"#EBEBEB"}},
+              x:{ticks:{font:{family:"Open Sans",size:11}},grid:{display:false}}}}
   });
 
-  var ctx2 = document.getElementById("chart-qs").getContext("2d");
+  var c2 = document.getElementById("chart-qs").getContext("2d");
   if (qChart) qChart.destroy();
-  var qErr = qCorrect.map(function(c) { return n - c; });
-  qChart = new Chart(ctx2, {
-    type: "bar",
-    data: {
-      labels: ["P1","P2","P3","P4","P5"],
-      datasets: [
-        { label: "Aciertos", data: qCorrect, backgroundColor: "#E8F5EE", borderColor: "#1A6B3C", borderWidth: 2, borderRadius: 4 },
-        { label: "Errores",  data: qErr,     backgroundColor: "#FDECEB", borderColor: "#C0392B", borderWidth: 2, borderRadius: 4 }
+  var qErr = qCorrect.map(function(c){return n-c;});
+  qChart = new Chart(c2, {
+    type:"bar",
+    data:{
+      labels:["P1","P2","P3","P4","P5"],
+      datasets:[
+        {label:"Aciertos",data:qCorrect,backgroundColor:"#E8F5EE",borderColor:"#1A6B3C",borderWidth:2,borderRadius:4},
+        {label:"Errores", data:qErr,    backgroundColor:"#FDECEB",borderColor:"#C0392B",borderWidth:2,borderRadius:4}
       ]
     },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { position: "bottom", labels: { font: { family: "Open Sans", size: 11 }, boxWidth: 12, padding: 12 } } },
-      scales: {
-        y: { beginAtZero: true, ticks: { stepSize: 1, font: { family: "Open Sans", size: 11 } }, grid: { color: "#EBEBEB" } },
-        x: { ticks: { font: { family: "Open Sans", size: 11 } }, grid: { display: false } }
-      }
-    }
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:"bottom",labels:{font:{family:"Open Sans",size:11},boxWidth:12,padding:12}}},
+      scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{family:"Open Sans",size:11}},grid:{color:"#EBEBEB"}},
+              x:{ticks:{font:{family:"Open Sans",size:11}},grid:{display:false}}}}
   });
 }
 
@@ -262,48 +298,30 @@ function renderBreakdown(qCorrect, n) {
   QN.forEach(function(name, j) {
     var pOk = Math.round(qCorrect[j] / n * 100);
     var pFail = 100 - pOk;
-    var barColor = pOk >= 70 ? "#1A6B3C" : pOk >= 50 ? "#B8860B" : "#C0392B";
-    html += '<div class="q-row">';
-    html += '<span class="q-num">P' + (j+1) + '</span>';
-    html += '<span class="q-name">' + name + '</span>';
-    html += '<div class="q-bar-wrap">';
-    html += '<div class="q-bar-bg"><div class="q-bar-fill" style="width:' + pOk + '%;background:' + barColor + '"></div></div>';
-    html += '<div class="q-pcts"><span class="pct-ok">' + pOk + '% correcto</span><span class="pct-fail">' + pFail + '% error</span></div>';
-    html += '</div></div>';
+    var color = pOk >= 70 ? "#1A6B3C" : pOk >= 50 ? "#B8860B" : "#C0392B";
+    html += '<div class="q-row"><span class="q-num">P'+(j+1)+'</span><span class="q-name">'+name+'</span>';
+    html += '<div class="q-bar-wrap"><div class="q-bar-bg"><div class="q-bar-fill" style="width:'+pOk+'%;background:'+color+'"></div></div>';
+    html += '<div class="q-pcts"><span class="pct-ok">'+pOk+'% correcto</span><span class="pct-fail">'+pFail+'% error</span></div></div></div>';
   });
   document.getElementById("q-breakdown").innerHTML = html;
 }
 
 function renderTable(records) {
-  if (!records.length) {
-    document.getElementById("tbl-body").innerHTML = '<tr><td colspan="9"><div class="empty-msg">Sin datos.</div></td></tr>';
-    return;
-  }
   var html = "";
   records.forEach(function(r, i) {
-    var pct = Number(r.pct) || Math.round(Number(r.score) / 5 * 100);
-    var sc = pct >= 80 ? "#1A6B3C" : pct >= 60 ? "#B8860B" : "#C0392B";
-    var bg = pct >= 80 ? "#E8F5EE" : pct >= 60 ? "#FBF5E0" : "#FDECEB";
-    html += '<tr>';
-    html += '<td style="color:var(--muted);font-size:12px">' + (i+1) + '</td>';
-    html += '<td><span class="score-badge" style="background:' + bg + ';color:' + sc + '">' + r.score + ' / 5</span></td>';
-    html += '<td style="font-family:Montserrat,sans-serif;font-weight:800;color:' + sc + '">' + pct + '%</td>';
-    var ans = r.answers || [];
-    for (var j = 0; j < 5; j++) {
-      var ok = Number(ans[j]) === 1;
-      html += '<td><span class="ans-dot ' + (ok ? "dot-ok" : "dot-fail") + '">' + (ok ? "&#10003;" : "&#10007;") + '</span></td>';
+    var pct = r.pct || Math.round(r.score / 5 * 100);
+    var sc = pct>=80?"#1A6B3C":pct>=60?"#B8860B":"#C0392B";
+    var bg = pct>=80?"#E8F5EE":pct>=60?"#FBF5E0":"#FDECEB";
+    html += '<tr><td style="color:var(--muted);font-size:12px">'+(i+1)+'</td>';
+    html += '<td><span class="score-badge" style="background:'+bg+';color:'+sc+'">'+r.score+' / 5</span></td>';
+    html += '<td style="font-family:Montserrat,sans-serif;font-weight:800;color:'+sc+'">'+pct+'%</td>';
+    for (var j=0;j<5;j++){
+      var ok=r.answers[j]===1;
+      html+='<td><span class="ans-dot '+(ok?"dot-ok":"dot-fail")+'">'+(ok?"&#10003;":"&#10007;")+'</span></td>';
     }
-    html += '<td style="font-size:11px;color:var(--muted)">' + (r.ts || "--") + '</td>';
-    html += '</tr>';
+    html+='<td style="font-size:11px;color:var(--muted)">'+(r.ts||"--")+'</td></tr>';
   });
-  document.getElementById("tbl-body").innerHTML = html;
-}
-
-function clearData() {
-  if (!confirm("Borrar todos los resultados del grupo?")) return;
-  fetch(GOOGLE_SCRIPT_URL + "?action=clear")
-    .then(function() { loadData(); })
-    .catch(function(e) { alert("Error al borrar: " + e.message); });
+  document.getElementById("tbl-body").innerHTML = html || '<tr><td colspan="9"><div class="empty-msg">Sin datos.</div></td></tr>';
 }
 
 init();
